@@ -17,27 +17,46 @@
 	<!-- Page Content -->
 	  <div class="container">
 	  
-	  <p th:unless="${posts} and ${posts.size()}">You have not added any post</p>
+	  
 	<br />
 	    <div class="row">
 	
-	      <!-- Blog Entries Column -->
-	      <div class="col-md-8 offset-md-2">
-	
-	        <!-- Blog Post -->
-	        <div class="card mb-4" th:each="post : ${posts}">
-	          <img class="card-img-top" th:src="@{${'/uploads/' + post.imgUrl }}" th:alt="${post.title}">
-	          <div class="card-body">
-	            <h2 class="card-title" th:text="${post.title}"></h2>
-	            <p class="card-text" th:text="${post.description}"></p>
-	            <a href="details.html" class="btn btn-primary" th:href="@{/view_post/{id}(id=${post.id})}">Read More &rarr;</a>
-	          </div>
-	          <div class="card-footer text-muted">
-	            Posted on <span th:text="${#dates.format(post.createdAt, 'dd-MMM-yyyy')}"></span>
-	          </div>
-	        </div>
-	
-	       
+	      
+	       <!-- Post Content Column -->
+		      <div class="col-md-8 offset-md-2">
+		
+		        <!-- Title -->
+		        <h1 class="mt-4" th:text="${post.title}">Post Title</h1>
+		
+		        <!-- Author -->
+		        <!-- 
+		        <p class="lead">
+		          by
+		          <a href="#">Start Bootstrap</a>
+		        </p>
+		         -->
+		
+		        <hr>
+		
+		        <!-- Date/Time -->
+		        <p>Posted on <span th:text="${#dates.format(post.createdAt, 'dd-MMM-yyyy')}"></span></p>
+		
+		        <hr>
+		
+		        <!-- Preview Image -->
+		        <img class="img-fluid rounded" th:src="@{${'/uploads/' + post.imgUrl }}" th:alt="${post.title}">
+		
+		        <hr>
+		
+		        <!-- Post Content -->
+		        <div class="post_content" th:utext="${post.content}"></div>
+		        
+		         <hr>
+		
+		       
+		        
+		
+		      </div>
 	       
 	        
 	

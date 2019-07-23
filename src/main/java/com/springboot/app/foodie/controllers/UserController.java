@@ -31,7 +31,11 @@ import com.springboot.app.foodie.models.data.PostDao;
 public class UserController {
 	
 	//Save the uploaded file to this folder
-    private static String UPLOADED_FOLDER = "C://uploads//";
+    private static String uploadedFolder = "/src/main/resources/static/uploads/";
+
+    private static Path absolutePath  = Paths.get(".");
+    
+
 	
 	@Autowired
 	private PostDao postDao;
@@ -60,7 +64,7 @@ public class UserController {
 			long timeStamp = new Date().getTime();
 			byte[] bytes = imageFile.getBytes();
 			String filename = timeStamp + "_" +imageFile.getOriginalFilename();
-			Path path = Paths.get(UPLOADED_FOLDER + filename);
+			Path path = Paths.get(absolutePath + uploadedFolder + filename);
 			Files.write(path, bytes);
 			post.setImgUrl(filename);	
 		}
@@ -88,10 +92,10 @@ public class UserController {
 		if(!imageFile.isEmpty()) {
 			//Getting the old post image			
 			String currentImage = post.getImgUrl();
-			
+
 			//Removing the old image from the local directory/path
 			if(!currentImage.isEmpty()){
-				Files.delete(Paths.get(UPLOADED_FOLDER + currentImage));
+				Files.delete(Paths.get(absolutePath + uploadedFolder + currentImage));
 			}
 			
 			//Current time in milli seconds
@@ -100,7 +104,7 @@ public class UserController {
 			
 			//Image name to include timestamp
 			String filename = timeStamp + "_" +imageFile.getOriginalFilename();
-			Path path = Paths.get(UPLOADED_FOLDER + filename);
+			Path path = Paths.get(absolutePath + uploadedFolder + filename);
 			Files.write(path, bytes);
 			
 			//Setting new Image name
@@ -125,11 +129,10 @@ public class UserController {
 		
 		//Removing the old image from the local directory/path
 		if(!image.isEmpty() || image != null){
-			Files.delete(Paths.get(UPLOADED_FOLDER + image));
+			Files.delete(Paths.get(absolutePath + uploadedFolder + image));
 		}
 		
-		postDao.delete(post);
-		
+		postDao.delete(post);		
 		
 		
 		return this.index(model);
