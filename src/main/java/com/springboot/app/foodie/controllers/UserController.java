@@ -22,7 +22,7 @@ import com.springboot.app.foodie.models.Category;
 //import com.springboot.app.foodie.models.Category;
 import com.springboot.app.foodie.models.Post;
 import com.springboot.app.foodie.models.data.CategoryService;
-import com.springboot.app.foodie.models.data.PostDao;
+import com.springboot.app.foodie.models.data.PostService;
 
 
 
@@ -38,7 +38,7 @@ public class UserController {
 
 	
 	@Autowired
-	private PostDao postDao;
+	private PostService postDao;
 	
 	@Autowired
 	private CategoryService service;
@@ -46,7 +46,7 @@ public class UserController {
 	
 	@GetMapping
 	public String index(Model model) {
-		model.addAttribute("posts", postDao.findAll());
+		model.addAttribute("posts", postDao.getAllPosts());
 		
 		return "admin/index";
 	}
@@ -71,7 +71,7 @@ public class UserController {
 		
 		Category cat = service.getCategory(category);
 		post.setCategory(cat);
-		postDao.save(post);
+		postDao.savePost(post);
 		
 		
 		return "redirect:";
@@ -81,7 +81,7 @@ public class UserController {
 	@GetMapping("/edit/{id}")
 	public String showUpdatePage(@PathVariable("id") int id, Model model) {
 		
-		model.addAttribute("post", postDao.findById(id));
+		model.addAttribute("post", postDao.findPostById(id));
 		model.addAttribute("categories", service.getAllCategories());
 		return "admin/update-post";
 
@@ -114,7 +114,7 @@ public class UserController {
 		
 		Category cat = service.getCategory(category);
 		post.setCategory(cat);
-		postDao.save(post);
+		postDao.savePost(post);
 		
 		
 		return "redirect:";
@@ -122,7 +122,7 @@ public class UserController {
 	
 	@GetMapping("/delete/{id}")
 	public String deletePost(@PathVariable("id") int id, Model model) throws IOException {
-		Post post = postDao.findById(id)
+		Post post = postDao.findPostById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid post Id:" + id));
 		
 		String image = post.getImgUrl();
@@ -132,7 +132,7 @@ public class UserController {
 			Files.delete(Paths.get(absolutePath + uploadedFolder + image));
 		}
 		
-		postDao.delete(post);		
+		postDao.deletePost(post);		
 		
 		
 		return this.index(model);
