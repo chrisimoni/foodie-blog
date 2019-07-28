@@ -51,6 +51,7 @@ public class UserController {
 		return "admin/index";
 	}
 	
+	
 	@GetMapping("/add_post")
 	public String showForm(Model model) {
 		model.addAttribute("post", new Post());

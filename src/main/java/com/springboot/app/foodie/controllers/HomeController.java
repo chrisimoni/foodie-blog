@@ -53,5 +53,9 @@ public class HomeController {
 		return "category";
 	}
 	
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
 	
 }
